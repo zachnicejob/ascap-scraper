@@ -3,7 +3,7 @@ const ExcelJS = require('exceljs');
 const fs = require('fs');
 
 // Replace '' with the URL you want to scrape
-const targetURL = '';
+const targetURL = 'https://www.ascap.com/repertory#/ace/search/writer/Jonathan%20Geer/publisher/MATERIA%20COLLECTIONS?searchFilter=SVW&page=1';
 // If URL redirects to writer search page
 const writerHref = `a[href="${targetURL.substring(31)}"]`;
 
@@ -16,7 +16,7 @@ const writerHref = `a[href="${targetURL.substring(31)}"]`;
   
   async function pauseExecution() {
     console.log('Starting pause...');
-    await delay(1000); // Pause for 5 seconds
+    await delay(1000); // Pause for <x> seconds
     console.log('1 second has passed.');
   }
   // Launch a new browser session
@@ -26,7 +26,7 @@ const writerHref = `a[href="${targetURL.substring(31)}"]`;
   const page = await browser.newPage();
  
   // Set a common User-Agent to avoid being blocked by the website
-  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3');
+  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36');
   // Go to the webpage
   await page.goto(targetURL);
   
@@ -54,8 +54,8 @@ const writerHref = `a[href="${targetURL.substring(31)}"]`;
   await page.click('.c-btn.c-btn--basic');
 
   await pauseExecution();
-  await page.waitForSelector('a[href="#/ace/writer/673034161/LARKIN%20CHRISTOPHER%20JAMES"]', { visible: true }, {timeout: 3000});
-  await page.click('a[href="#/ace/writer/673034161/LARKIN%20CHRISTOPHER%20JAMES"]');
+  await page.waitForSelector(writerHref, { visible: true }, {timeout: 3000});
+  await page.click(writerHref);
 
   // Wait for the specific elements to be loaded
   await page.waitForSelector('.c-card.u-spacing-outside-bottom-lg.is-collapsed');
